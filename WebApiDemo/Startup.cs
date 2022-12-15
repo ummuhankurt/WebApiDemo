@@ -10,7 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiDemo.CustomMiddlewares;
 using WebApiDemo.DataAccess;
+using WebApiDemo.Formatters;
 
 namespace WebApiDemo
 {
@@ -29,6 +31,10 @@ namespace WebApiDemo
             services.AddControllers();
             services.AddScoped<IProductDal, EfProductDal>();
             services.AddScoped<IEmployeeDal, EfEmployeeDal>();
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.Add(new VcardOutputFormatter());
+            }); 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -37,7 +43,7 @@ namespace WebApiDemo
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseMiddleware<AuthenticationMiddleware>();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -46,6 +52,7 @@ namespace WebApiDemo
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }

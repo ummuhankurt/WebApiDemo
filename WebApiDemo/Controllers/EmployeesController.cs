@@ -10,7 +10,7 @@ namespace WebApiDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : Controller
     {
         public IEmployeeDal _employeeDal { get; set; }
         public EmployeesController(IEmployeeDal employeeDal)
